@@ -73,23 +73,48 @@ $(document).ready(function() {
 
     $("#post-form").on('submit', function(e) {
         e.preventDefault();
-        $.ajax({
-            method: $(this).attr('method'),
-            url: $(this).attr('action'),
-            data: {
-                title: $("#postTitle").val(),
-                content: $("#postContent").val(),
-            },
+        console.log($("#postTitle").val());
+        fetch( 'http://localhost:1337/api/admin/post/crud' , { 
+            method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 "Authorization": user.token,
             },
-            success: function (response) {
-                window.location.reload();
-            },
-            error: function (error) {
-                $("#form-error-msg").removeClass('d-none').text(error.responseJSON.message);
-            }
-        });
+            body: JSON.stringify({
+                    title: $("#postTitle").val(),
+                    content: $("#postContent").val(),
+                }),
+            })
+                .then(
+                    function (response) {
+                        if (response.status !== 200) {
+                            console.log('Looks like there was a problem. Status Code: ' + response.status);
+                            return;
+                        }
+                        window.location.reload();    
+                    }
+                )
+                .catch(function (err) {
+                    console.log('Fetch Error :-S', err);
+                    $("#form-error-msg").removeClass('d-none').text(error.responseJSON.message);
+                });
+        // $.ajax({
+        //     method: $(this).attr('method'),
+        //     url: $(this).attr('action'),
+        //     data: {
+        //         title: $("#postTitle").val(),
+        //         content: $("#postContent").val(),
+        //     },
+        //     headers: {
+        //         "Authorization": user.token,
+        //     },
+        //     success: function (response) {
+        //         window.location.reload();
+        //     },
+        //     error: function (error) {
+        //         $("#form-error-msg").removeClass('d-none').text(error.responseJSON.message);
+        //     }
+        // });
     });
 })
 

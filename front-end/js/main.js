@@ -153,7 +153,7 @@ showLoginAlert = (message, style='danger') => {
 }
 
 openAdmin = () => {
-    window.location.href = '/admin/'
+    window.location.href = './admin/index.html'
 }
 
 logout = () => {
