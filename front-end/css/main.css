@@ -1,0 +1,314 @@
+* {
+    font-family: Samim;
+    direction: rtl;
+}
+
+:root {
+    --blue-color: rgb(0, 103, 168);
+    --dark-blue-color: rgb(3, 33, 55);
+    --gray-color: #3F4254;
+    --gray-light-color: #a2a3b7;
+    --gray-lighter-color: rgb(231, 239, 248);
+    /**********************************/
+    --dark-blue: rgb(3, 33, 55);
+    --light-blue: rgb(231, 239, 248);
+    --org-blue: rgb(0, 103, 168);
+    --blue: rgb(0, 135, 217);
+}
+
+body {
+    background: white;
+}
+
+/***************** Top Nav *****************/
+
+#top-nav {
+    background: var(--light-blue);
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    box-shadow: 0 -3px 15px 0 #6e6e6e;
+    z-index: 10;
+}
+
+/* Logo */
+
+.logo-container {
+    height: 100%;
+    width: 150px;
+}
+
+.logo-image {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: 50px;
+    top: 0px;
+}
+
+/* Sub Menu */
+
+#sub-menu {
+    width: calc(100% - 300px);
+}
+
+.login-btn i {
+    vertical-align: middle;
+}
+
+#pills-tab a {
+    transition-duration: 0s;
+}
+
+#pills-tab a:not(.active):hover {
+    color: var(--dark-blue-color);
+}
+
+.btn-outline-custom {
+    color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    align-items: center;
+    width: 100px;
+    height: 36px;
+    border: 2px solid var(--org-blue);
+    border-radius: 4px;
+}
+
+.signin-and-signup-texts {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: var(--org-blue);
+    font-size: 14px;
+}
+
+#toggle-menu-btn {
+    cursor: pointer;
+    display: none;
+}
+
+/***************** Bottom Nav *****************/
+
+#bottom-nav {
+    background: var(--light-blue);
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 99;
+    box-shadow: 0 10px -3px 0 black;
+    display: none;
+}
+
+/************* Sidebar *************/
+
+#sidebar {
+    width: 300px;
+    height: calc(100% - 100px);
+    background: var(--org-blue);
+    color: var(--light-blue);
+    position: fixed;
+    right: 0;
+    top: 100px;
+    z-index: 5;
+    padding-right: 20px;
+}
+
+#sidebar h4 {
+    text-align: right;
+    margin: 25px 0;
+    font-weight: bold;
+    font-size: large;
+}
+
+.team-members-list {
+    display: flex;
+    justify-content: flex-start;
+    font-size: small;
+    color: rgb(232, 239, 247);
+}
+
+/************* Main Container *************/
+
+#main-container {
+    background: white;
+    width: calc(100% - 300px);
+    margin: 75px 300px 0 0;
+    overflow: hidden;
+}
+
+/************* Main Page *************/
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    padding: 25px;
+}
+
+.grid-item {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-item .image-container {
+    background: #d9d9d9;
+    color: var(--gray-color);
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.image-container:hover {
+    box-shadow: 0 2px 8px 1px #ababab
+}
+
+.image-container i {
+    font-size: 5em;
+}
+
+/************ Modal ************/
+
+#modal {
+    background: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 150;
+    transform: scale(0);
+    /* transition-duration: 0.25s; */
+}
+
+#modal.active-modal {
+    transform: scale(1);
+}
+
+/************ Responsive ************/
+
+@media only screen and (max-width: 1000px) {
+    .grid-container {
+        grid-template-columns: 33.33% 33.33% 33.33%;
+    }
+    .grid-item {
+        height: 150px;
+    }
+    .image-container i {
+        font-size: 3.5em;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    /* For Bug Fix */
+    .grid-item {
+        height: 100px;
+    }
+    .image-container i {
+        font-size: 2.3em;
+    }
+    .login-btn span {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 610px) {
+    /* For Bug Fix */
+    #sub-menu ul a.nav-link span {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    /** Submenu and Navs **/
+    #sub-menu ul a.nav-link span {
+        display: inline-block;
+    }
+    #sub-menu {
+        justify-content: center !important;
+        width: 100%;
+        height: 75px;
+        background: white;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        box-shadow: 0 -2px 15px 0 #929292;
+        z-index: 99;
+    }
+    body.night-mode #sub-menu {
+        background: var(--dark-blue-color);
+        box-shadow: 0 -2px 15px 0 var(--dark-blue-color);
+    }
+    #sub-menu .login-btn {
+        margin-right: 0 !important;
+    }
+    #toggle-menu-btn {
+        display: block;
+    }
+    .logo-container {
+        width: auto;
+    }
+    .login-btn span {
+        display: inline-block;
+    }
+    /** Sidebar **/
+    #sidebar {
+        height: calc(100% - 150px);
+        overflow: hidden;
+        right: unset;
+        left: -100%;
+    }
+    .open-sidebar {
+        left: 0 !important;
+    }
+    /** Main Container **/
+    #main-container {
+        width: 100%;
+        margin-right: 0;
+    }
+    /** Main Page **/
+    #pills-home {
+        margin-bottom: 100px;
+    }
+    .grid-container {
+        grid-template-columns: 100%;
+    }
+    .grid-item {
+        height: 250px;
+    }
+    .image-container i {
+        font-size: 3.5em;
+    }
+}
+
+/**************************  Posts *********************/
+
+#posts-container * {
+    direction: rtl;
+    text-align: right;
+}
+
+#posts-container .card-header i {
+    vertical-align: middle;
+    font-size: 18px;
+    margin-left: 5px;
+}
+
+#posts-container .post-created-at {
+    margin-left: 5px;
+    margin-top: 4px;
+}

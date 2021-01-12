@@ -1,0 +1,123 @@
+@font-face {
+    font-family: NeueMontrealBold;
+    src: url(../NeueMontreal-Bold.otf);
+}
+
+/***************** Login-Register *****************/
+
+#login-nav {
+    background: transparent;
+    height: 100px;
+    top: 40px;
+}
+
+.login-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+#login-box {
+    position: relative;
+    top: 20vh;
+}
+
+.login-logo-container {
+    height: 100%;
+    text-align: center;
+}
+
+.login-logo-container img {
+    height: 150%;
+    position: absolute;
+    right: -15px;
+}
+
+#go-home {
+    color: var(--org-blue);
+    position: absolute;
+    left: -25px;
+    top: 65px;
+}
+
+.login-box {
+    height: 400px;
+    background-color: white;
+    min-width: 350px;
+    max-width: 400px;
+}
+
+.login-form-item {
+    width: 300px;
+}
+
+.tab-header {
+    height: 15%;
+}
+
+.form-tab {
+    height: 70%;
+}
+
+.tab-footer {
+    height: 15%;
+}
+
+.login-parent {
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: var(--light-blue);
+}
+
+.image-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logreg-input {
+    padding: 1.5rem !important;
+}
+
+.login-motivation-text {
+    direction: ltr;
+    display: flex;
+    text-align: left;
+    font-family: NeueMontrealBold;
+    font-size: 60px;
+    color: rgb(24, 106, 165);
+}
+
+.btn-primary {
+    background-color: var(--org-blue) !important;
+    color: var(--light-blue) !important;
+}
+
+.btn-outline-primary {
+    background-color: white !important;
+    border: none;
+    color: var(--org-blue) !important;
+}
+
+#login-image {
+    background-image: url("../images/signup-highQ-light.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+@media only screen and (max-width: 1000px) {
+    #login-image {
+        background-image: url("../images/signup-lowQ-light.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #login-image {
+        display: none;
+    }
+    .login-box {
+        max-width: 100%;
+    }
+}

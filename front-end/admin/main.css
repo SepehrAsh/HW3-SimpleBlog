@@ -1,0 +1,39 @@
+* {
+    font-family: Samim;
+    direction: rtl;
+    text-align: right;
+}
+
+/* Posts */
+.card-header i {
+    vertical-align: middle;
+    font-size: 18px;
+    margin-left: 5px;
+}
+
+.post-created-at{
+    margin-left: 5px;
+    margin-top: 4px;
+}
+
+.post-container {
+    overflow: hidden;
+}
+
+.remove-post-container {
+    color: #e74c3c;
+    cursor: pointer;
+}
+
+.remove-post-container:hover {
+    color: #c0392b
+}
+
+.edit-post-container {
+    color: #34495e;
+    cursor: pointer;
+}
+
+.edit-post-container:hover {
+    color: #2c3e50
+}
