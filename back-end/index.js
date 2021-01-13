@@ -1,6 +1,7 @@
 var express = require('express')
 var cors = require('cors')
 var app = express()
+const jwt = require("jsonwebtoken");
 
 app.use(express.json())
 app.use(cors())
@@ -260,7 +261,7 @@ async function createPost(title, content) {
     const query = new Parse.Query(Post);
     console.log(title);
     console.log(content)
-    //let postId = 1 + await query.count();
+    let postId = 1 + await query.count();
     // find id
     // const pipeline = [
     //     { group: { objectId: null, total: { $max: '$title_id' } } }
@@ -268,7 +269,7 @@ async function createPost(title, content) {
 
     // let postId = 1 + (await query.aggregate(pipeline))[0].total;
 
-    let postId = 2;
+    //let postId = 2;
     // TODO: counting the postid
     console.log(postId);
 

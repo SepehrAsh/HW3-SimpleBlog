@@ -110,7 +110,7 @@ $(document).ready(function() {
 
 logout = () => {
     window.localStorage.removeItem('user')
-    window.location.href = '/'
+    window.location.href = '../index.html'
 }
 
 function createAndAppendPosts(posts) {
