@@ -56,8 +56,13 @@ function createAndAppendPosts(posts) {
 
 function createPostElements(posts) {
     postsElements = [];
+
     array_json = posts["post"];
     var i;
+    if (!Array.isArray(array_json)){
+        array_json = [];
+        array_json.push(posts["post"]);
+    }
     for (i = 0; i < length(array_json); i++){
         $post = $(".clonable-post").clone(true);
         $post.removeClass('d-none clonable-post');

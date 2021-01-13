@@ -325,13 +325,11 @@ async function updatePost(title, content ,titleId) {
 app.delete('/api/admin/post/crud/:titleId', (req, res)=>{
     titleId = parseInt(req.params.titleId);
     isAdmin().then(value => {
-        
         if (value==false){
             res.status(404).send('you are not admin');
             return;
         }
-        
-        deletePost(titleId).then(value => {res.send({'id':value});}, reason => {
+        deletePost(titleId).then(value => {res.status(204).send({'id':value});}, reason => {
             res.status(400).send({"message": reason.message});
         })        
     });

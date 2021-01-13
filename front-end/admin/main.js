@@ -127,23 +127,6 @@ $(document).ready(function() {
                     console.log('Fetch Error :-S', err);
                     $("#form-error-msg").removeClass('d-none').text(error.responseJSON.message);
                 });
-        // $.ajax({
-        //     method: $(this).attr('method'),
-        //     url: $(this).attr('action'),
-        //     data: {
-        //         title: $("#postTitle").val(),
-        //         content: $("#postContent").val(),
-        //     },
-        //     headers: {
-        //         "Authorization": user.token,
-        //     },
-        //     success: function (response) {
-        //         window.location.reload();
-        //     },
-        //     error: function (error) {
-        //         $("#form-error-msg").removeClass('d-none').text(error.responseJSON.message);
-        //     }
-        // });
     });
 })
 
@@ -182,24 +165,6 @@ function createPostElements(posts) {
         $post.find(".edit-post-container").attr("data-pid", array_json[i].id);
         postsElements.push($post)
     }
-
-    // for (post of posts) {
-    //     $post = $(".clonable-post").clone(true);
-    //     $post.removeClass('d-none clonable-post');
-
-    //     $post.find(".post-title").text(post.title);
-    //     $post.find(".post-content").text(post.content);
-    //     $post.find(".post-author").text(post.user.email);
-    //     $post.find(".post-created-at").text(formatDate(post.createdAt));
-
-    //     $post.find(".remove-post-container").attr("data-pid", post.id).on('click', function(e) {
-    //         deletePostRequest($(this).data("pid"), $(this).closest(".post-container"));
-    //     });
-
-    //     $post.find(".edit-post-container").attr("data-pid", post.id);
-
-    //     postsElements.push($post)
-    // }
     
     return postsElements;
 }
@@ -219,21 +184,39 @@ function formatDate(date) {
 }
 
 function deletePostRequest(id, $post) {
-    $.ajax({
-        url: deletePostUrl + id,
-        method: "DELETE",
-        headers: {
-            "Authorization": user.token,
-        },
-        success: function (response) {
-            $post.fadeOut(300, function() {
-                $(this).remove();
-            });
-        },
-        error: function (error) {
-            console.log(error)
-        }
-    });
+    fetch('http://localhost:1337/api/admin/post/crud/' + id, {
+                method: 'DELETE',
+                headers: {
+                    "Authorization": user.token,
+                },
+            }).then(function (response) {
+                        if (response.status !== 204) {
+                            console.log('Looks like there was a problem. Status Code: ' + response.status);
+                            return;
+                        }
+                        $post.fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                    }
+                ).catch(function (err) {
+                    console.log('Fetch Error :-S', err);
+                });
+
+    // $.ajax({
+    //     url: deletePostUrl + id,
+    //     method: "DELETE",
+    //     headers: {
+    //         "Authorization": user.token,
+    //     },
+    //     success: function (response) {
+    //         $post.fadeOut(300, function() {
+    //             $(this).remove();
+    //         });
+    //     },
+    //     error: function (error) {
+    //         console.log(error)
+    //     }
+    // });
 }
 
 function setModalAttributes(modalTitle, title, content) {
