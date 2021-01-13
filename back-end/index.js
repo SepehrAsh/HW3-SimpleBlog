@@ -37,7 +37,7 @@ var dashboard = new ParseDashboard({
     ]
 });
 app.use('/dashboard', dashboard);
-//--------------------------------------
+//-------------------------------------------------------------------------
 
 
  
@@ -132,7 +132,11 @@ async function signIn(username, userpass) {
 app.get('/api/post/', function(req, res){
     let posts = getAllPosts();
     //posts.then(value => {res.send(value);}, reason => {res.send("something went wrong")});
-    posts.then(value => {res.send({message:value});}, reason => {res.send("something went wrong")});
+    posts.then(value => {
+        res.json({
+            "post" : value
+        });
+    }, reason => {res.send("something went wrong")});
 })
 
 

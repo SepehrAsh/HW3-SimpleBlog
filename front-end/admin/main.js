@@ -33,52 +33,29 @@ $(document).ready(function() {
     $('#user-email-placeholder').html(user.email)
 
 
-
     fetch('http://localhost:1337/api/admin/post/crud/', { 
             method: 'GET',
             headers: {
                 "Authorization": user.token,
             },
-            })
-                .then(
-                    function (response) {
-                        if (response.status !== 200) {
-                            console.log('Looks like there was a problem. Status Code: ' + response.status);
-                            return;
-                        }
-                        response.text().then(txt =>{
-                            let json_obj = JSON.parse(txt);
-                            console.log(json_obj);
-                            if (json_obj){
-                                createAndAppendPosts(json_obj);
-                            } else{
-                                $("#no-post-alert").removeClass("d-none");
-                            }
-                        })  
+            }).then(function (response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
+                response.text().then(txt =>{
+                    let json_obj = JSON.parse(txt);
+                    if (json_obj){
+                        createAndAppendPosts(json_obj);
+                    } else{
+                        $("#no-post-alert").removeClass("d-none");
                     }
-                )
-                .catch(function (err) {
-                    console.log('Fetch Error :-S', err);
-                });
+                })  
+            }
+            ).catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
 
-
-    // $.ajax({
-    //     url: getUserPostsUrl,
-    //     method: 'GET',
-    //     headers: {
-    //         "Authorization": user.token,
-    //     },
-    //     success: function (response) {
-    //         if (response.length)
-    //             createAndAppendPosts(response);
-    //         else
-    //             $("#no-post-alert").removeClass("d-none");
-            
-    //     },
-    //     error: function (error) {
-    //         console.log(error)
-    //     }
-    // });
 
     $("#create-post-btn").on('click', function(e) {
         $("#post-form").attr({
@@ -201,22 +178,6 @@ function deletePostRequest(id, $post) {
                 ).catch(function (err) {
                     console.log('Fetch Error :-S', err);
                 });
-
-    // $.ajax({
-    //     url: deletePostUrl + id,
-    //     method: "DELETE",
-    //     headers: {
-    //         "Authorization": user.token,
-    //     },
-    //     success: function (response) {
-    //         $post.fadeOut(300, function() {
-    //             $(this).remove();
-    //         });
-    //     },
-    //     error: function (error) {
-    //         console.log(error)
-    //     }
-    // });
 }
 
 function setModalAttributes(modalTitle, title, content) {
