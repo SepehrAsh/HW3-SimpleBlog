@@ -60,7 +60,7 @@ $(document).ready(function() {
     $("#create-post-btn").on('click', function(e) {
         $("#post-form").attr({
             method: "POST",
-            action: createPostUrl,
+            action: "", //createPostUrl,
         });
         setModalAttributes("ایجاد پست جدید", "", "")
     });
@@ -68,7 +68,7 @@ $(document).ready(function() {
     $(".edit-post-container").on('click', function(e) {
         $("#post-form").attr({
             method: "PUT",
-            action: updatePostUrl + $(this).data('pid'),
+            action: $(this).data('pid'), //updatePostUrl + $(this).data('pid'),
         });
 
         $postContainer = $(this).closest(".post-container");
@@ -80,8 +80,9 @@ $(document).ready(function() {
 
     $("#post-form").on('submit', function(e) {
         e.preventDefault();
-        fetch( 'http://localhost:1337/api/admin/post/crud' , { 
-            method: 'POST',
+        console.log($(this).attr('action'));
+        fetch( 'http://localhost:1337/api/admin/post/crud/' +  $(this).attr('action'), { 
+            method: $(this).attr('method'),
             headers: {
                 'Content-Type': 'application/json',
                 "Authorization": user.token,
