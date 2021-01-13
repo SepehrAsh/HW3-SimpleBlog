@@ -201,26 +201,23 @@ login = () => {
                             "email": email,
                             "password": password
                         }),
-            })
-                .then(
-                    function (response) {
-                        if (response.status !== 200) {
-                            console.log('Looks like there was a problem. Status Code: ' + response.status);
-                            return;
-                        }
-                        response.text().then(txt =>
-                            console.log(txt));
-                            //todo: handle the fuckin token
-                            const token = "a";     //response.token
-                            setLocalStorageWithExpiry('user', {
-                                token: token,
-                                email: email
-                            }, 3600000)
-                            showLoginAlert('Login successful', 'success');
-                            showLoggedInButtons();
-                            closeModal();
+            }).then(
+                function (response) {
+                    if (response.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' + response.status);
+                        return;
                     }
-                )
+                    response.text().then(txt => {
+                        const token = JSON.parse(txt)['accessToken'];
+                        setLocalStorageWithExpiry('user', {
+                            token: token,
+                            email: email
+                        }, 3600000);
+                        showLoginAlert('Login successful', 'success');
+                        showLoggedInButtons();
+                        closeModal();
+                    });
+                })
                 .catch(function (err) {
                     console.log('Fetch Error :-S', err);
                 });

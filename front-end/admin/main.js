@@ -36,7 +36,7 @@ $(document).ready(function() {
     fetch('http://localhost:1337/api/admin/post/crud/', { 
             method: 'GET',
             headers: {
-                "Authorization": user.token,
+                'Authorization': 'Bearer ' + user.token,
             },
             }).then(function (response) {
                 if (response.status !== 200) {
@@ -80,12 +80,12 @@ $(document).ready(function() {
 
     $("#post-form").on('submit', function(e) {
         e.preventDefault();
-        console.log($(this).attr('action'));
+        //console.log(user.token);
         fetch( 'http://localhost:1337/api/admin/post/crud/' +  $(this).attr('action'), { 
             method: $(this).attr('method'),
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": user.token,
+                'Authorization': 'Bearer ' + user.token,
             },
             body: JSON.stringify({
                     title: $("#postTitle").val(),
@@ -165,7 +165,7 @@ function deletePostRequest(id, $post) {
     fetch('http://localhost:1337/api/admin/post/crud/' + id, {
                 method: 'DELETE',
                 headers: {
-                    "Authorization": user.token,
+                    'Authorization': 'Bearer ' + user.token,
                 },
             }).then(function (response) {
                         if (response.status !== 204) {

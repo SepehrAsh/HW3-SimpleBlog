@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require('express')
 var cors = require('cors')
 var app = express()
@@ -62,25 +63,19 @@ app.post('/api/signup', (req, res) => {
 
 async function signUp(mail, userpass) {
     if(userpass.length < 5) {
-        let messageErr = {code:125 ,message:"filed `password`.length should be gt 5"};
+        let messageErr = {code:125 ,message:"filed `password`.length should be > 5"};
         return Promise.reject(messageErr);
     }
-
     Parse.User.enableUnsafeCurrentUser()
     const user = new Parse.User();
     user.set("username", mail);
     user.set("email", mail);
-    user.set("password", userpass); //"my pass" thisispass
-
-    // other fields can be set just like with Parse.Object
-    //user.set("phone", "415-392-0202");
+    user.set("password", userpass); 
     try {
         await user.signUp();
-        console.log("anjam shod");
         return "Hooray! Let them use the app now.";
 
     } catch (error) {
-        // Show the error message somewhere and let the user try again.
         let messageErr = {code:error.code ,message:error.message};
         return Promise.reject(messageErr);
     }
@@ -93,8 +88,11 @@ async function signUp(mail, userpass) {
 app.post('/api/signin', (req,res) =>{
     var p1 = signIn(req.body.email, req.body.password);
     p1.then(value => {
-        // todo token
-        res.send(value); // Success!
+        const username = req.body.email;
+        const user = { name : username };
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+        console.log(accessToken);
+        res.json({ accessToken : accessToken });
       }, reason => {
           console.log(reason);
         let header_status = 400;
@@ -103,7 +101,7 @@ app.post('/api/signin', (req,res) =>{
         } else if (reason.code == 101) {
             header_status == 401;
         }
-        res.status(header_status).send(reason); // Error!
+        res.status(header_status).send(reason); 
     });
 
 })
@@ -112,7 +110,7 @@ async function signIn(username, userpass) {
     if(false) { // todo username is not email
         let messageErr = {code:201 ,message:"filed `email` is not valid"};
         return Promise.reject(messageErr);
-    } else if (false) { //todo request length
+    } else if (username === undefined || userpass === undefined) { //todo request length
         let messageErr = {code:201 ,message:"Request Length should be 2"};
         return Promise.reject(messageErr);
     }
@@ -121,7 +119,6 @@ async function signIn(username, userpass) {
         const user = await Parse.User.logIn(username, userpass);
         return user.getEmail();
     } catch (error) {
-        // Show the error message somewhere and let the user try again.
         let messageErr = {code:error.code ,message:error.message};
         return Promise.reject(messageErr);
     }
@@ -132,7 +129,6 @@ async function signIn(username, userpass) {
 
 app.get('/api/post/', function(req, res){
     let posts = getAllPosts();
-    //posts.then(value => {res.send(value);}, reason => {res.send("something went wrong")});
     posts.then(value => {
         res.json({
             "post" : value
@@ -140,18 +136,15 @@ app.get('/api/post/', function(req, res){
     }, reason => {res.send("something went wrong")});
 })
 
-
 async function getAllPosts() {
     const PostObjects = Parse.Object.extend("Post");
     const query = new Parse.Query(PostObjects);
-    //query.equalTo("playerName", "Dan Stemkoski");
     const results = await query.find();
-    console.log("Successfully retrieved " + results.length + " scores.");
+    //console.log("Successfully retrieved " + results.length + " scores.");
     let posts = [];
     for (let i = 0; i < results.length; i++) {
         const object = results[i];
         //const creator =await (new Parse.Query(Parse.Object.extend("User"))).get(object.get('created_by').id);
-        //TODO: check wether post belongs to admin or not
         this_post = {
             id: object.get('title_id'),
             title: object.get('title'),
@@ -173,24 +166,13 @@ async function getAllPosts() {
 
 
 app.get('/api/admin/user/crud/:userId', (req, res)=>{
-    titleId = req.params.userId;
-    //TODO: handling this api!
-    isAdmin().then(value => {
-        
-    }, reason => {res.send("something went wrong")});
+    userId = parseInt(req.params.userId);
+    if (isNaN(userId)){
+        res.status(400).send({"message": "url id is not valid"})
+    } else{
+        res.status(200).send({}); //TODO: users should have IDs
+    }
 });
-
-
-// app.post('/api/getuser', (req,res) =>{
-//     const currentUser = Parse.User.current();
-//     // TODO: other respnse codes
-//     if (currentUser) {
-//         res.send(currentUser);
-//     } else {
-//         res.send('no user');
-//     }
-
-// })
 
 
 
@@ -198,61 +180,22 @@ app.get('/api/admin/user/crud/:userId', (req, res)=>{
 
 // ---------- Making a new Post ---------------
 
-app.post('/api/admin/post/crud', (req, res)=>{
-    console.log("hereeee");
-    isAdmin().then(value => {
-        
-        if (value==false){
-            res.status(404).send('you are not admin');
-            console.log("hereeee2");
-            return;
-        }
-        
-        let title = req.body.title;
-        let content = req.body.content;
-        console.log("hereeee3");
-        if(title == '') {
-            res.status(400).send({"message": "filed `title` is not valid"});
-            return;
-        }
-
-        createPost(title, content).then(value => {res.send({'id':value});}, reason => {
-            res.status(400).send({"message": reason.message});
-        })        
-    });
-})
-
-
-async function isAdmin(){
-    const currentUser = Parse.User.current();
-    console.log(currentUser);
-    if (currentUser) {
-        // //const query = await new Parse.Query(Parse.Role).equalTo('users', currentUser).find()
-        // //console.log(query);
-        
-        // var queries = [
-        //     new Parse.Query('_Role').equalTo('users', currentUser)
-        // ];
-        // for (var i = 0; i < 2; i++) {
-        //     queries.push(new Parse.Query('_Role').matchesQuery('roles', queries[i]));
-        // }
-        
-        // return currentUser.rolesPromise = Parse.Query.or.apply(Parse.Query, queries).find().then(
-        //     function(roles) {
-        //       return roles.map(function(role) {
-        //           if (role.get('name') == 'admin'){ return true;}
-        //           else { return false;}
-                  
-        //         //return role.get('name');
-        //       });
-        //     }
-        //   );
-        
-        return true;
-    } else {
-        return false;
+app.post('/api/admin/post/crud', authenticateToken, (req, res)=>{
+    //req.user
+    let title = req.body.title;
+    let content = req.body.content;
+    if(title === undefined || content == undefined) {
+        res.status(400).send({"message": "Request Length should be 2"});
+        return;
     }
-}
+    if (title == ''){
+        res.status(400).send({"message": "filed `title` is not valid"});
+        return;
+    }
+    createPost(title, content).then(value => {res.status(201).send({'id':value});}, reason => {
+        res.status(400).send({"message": reason.message});
+    })
+})
 
 
 async function createPost(title, content) {
@@ -262,17 +205,7 @@ async function createPost(title, content) {
     console.log(title);
     console.log(content)
     let postId = 1 + await query.count();
-    // find id
-    // const pipeline = [
-    //     { group: { objectId: null, total: { $max: '$title_id' } } }
-    // ];
-
-    // let postId = 1 + (await query.aggregate(pipeline))[0].total;
-
-    //let postId = 2;
-    // TODO: counting the postid
-    console.log(postId);
-
+    console.log("Post ID is: " + postId);
     post.set('title_id',postId);
     post.set('title',title);
     post.set('content',content);
@@ -284,26 +217,26 @@ async function createPost(title, content) {
 
 // ------------ Updating a Post ---------------
 
-app.put('/api/admin/post/crud/:titleId', (req, res)=>{
+app.put('/api/admin/post/crud/:titleId', authenticateToken, (req, res)=>{
     titleId = parseInt(req.params.titleId);
-    isAdmin().then(value => {
-        
-        if (value==false){
-            res.status(404).send('you are not admin');
-            return;
-        }
-        
-        let title = req.body.title;
-        let content = req.body.content;
-        if(title == '') {
-            res.status(400).send({"message": "filed `title` is not valid"});
-            return;
-        }
-
-        updatePost(title, content, titleId).then(value => {res.send({'id':value});}, reason => {
-            res.status(400).send({"message": reason.message});
-        })        
-    });
+    let title = req.body.title;
+    let content = req.body.content;
+    if(title === undefined || content == undefined) {
+        res.status(400).send({"message": "Request Length should be 2"});
+        return;
+    }
+    if (title == ''){
+        res.status(400).send({"message": "filed `title` is not valid"});
+        return;
+    }
+    if(title == '') {
+        res.status(400).send({"message": "filed `title` is not valid"});
+        return;
+    }
+    updatePost(title, content, titleId).then(value => {res.send({'id':value});}, reason => {
+        res.status(400).send({"message": reason.message});
+        // TODO: Handling different types of error codes
+    })
 })
 
 
@@ -327,17 +260,11 @@ async function updatePost(title, content ,titleId) {
 // ------------- Deleting a Post -------------
 
 // todo there is a bug : when we create post post.title_id = len post + 1, when we delete post and then create there may be duplicate
-app.delete('/api/admin/post/crud/:titleId', (req, res)=>{
+app.delete('/api/admin/post/crud/:titleId', authenticateToken, (req, res)=>{
     titleId = parseInt(req.params.titleId);
-    isAdmin().then(value => {
-        if (value==false){
-            res.status(404).send('you are not admin');
-            return;
-        }
-        deletePost(titleId).then(value => {res.status(204).send({'id':value});}, reason => {
-            res.status(400).send({"message": reason.message});
-        })        
-    });
+    deletePost(titleId).then(value => {res.status(204).send({'id':value});}, reason => {
+        res.status(400).send({"message": reason.message});
+    })
 })
 
 async function deletePost(titleId) {
@@ -357,50 +284,55 @@ async function deletePost(titleId) {
 
 // ---------- Getting your Posts (by id) -----------
 
-app.get('/api/admin/post/crud/:titleId', (req, res)=>{
+app.get('/api/admin/post/crud/:titleId', authenticateToken, (req, res)=>{
     titleId = parseInt(req.params.titleId);
-    isAdmin().then(value => {
-        if (value==false){
-            res.status(404).send('you are not admin');
-            return;
-        }
-        let posts = getAllPosts();
-        posts.then(value => {
-            for(post of value) {
-                console.log(post);
-                if(post.id == titleId){
-                    console.log("here")
-                    res.json({
-                        "post" : post
-                    });
-                    return
-                }
-                
+    let posts = getAllPosts();
+    posts.then(value => {
+        for(post of value) {
+            console.log(post);
+            if(post.id == titleId){
+                console.log("here")
+                res.json({
+                    "post" : post
+                });
+                return
             }
-            res.json({
-                "post" : value
-            });
-        }, reason => {res.send("something went wrong")});
-    });
+            
+        }
+        res.json({
+            "post" : value
+        });
+    }, reason => {res.send("something went wrong")});
 })
 
-// ----------- No ID ----------------
+// ----------- No ID ---------------
 
-app.get('/api/admin/post/crud/', (req, res)=>{
-    isAdmin().then(value => {
-        if (value==false){
-            res.status(404).send('you are not admin');
-            return;
-        }
-        let posts = getAllPosts();
+app.get('/api/admin/post/crud/', authenticateToken,  (req, res)=>{
+    let posts = getAllPosts();
         posts.then(value => {
             res.json({
                 "post" : value
             });
         }, reason => {res.send("something went wrong")});
-    });
 })
 
 
 
-app.listen(3000)
+// ---------- AUTHENTICATION --------------
+
+function authenticateToken(req, res, next){
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null)
+        return res.sendStatus(401);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) =>{
+        if (err)
+            return res.sendStatus(403);
+        req.user = user;
+        console.log("authenticated successfuly")
+        next(); 
+    })
+
+}
+
+
