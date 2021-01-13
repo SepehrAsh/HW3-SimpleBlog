@@ -145,14 +145,14 @@ async function getAllPosts() {
     let posts = [];
     for (let i = 0; i < results.length; i++) {
         const object = results[i];
-        const creator =await (new Parse.Query(Parse.Object.extend("User"))).get(object.get('created_by').id);
-        
+        //const creator =await (new Parse.Query(Parse.Object.extend("User"))).get(object.get('created_by').id);
+        //TODO: check wether post belongs to admin or not
         this_post = {
-            id: object.get('id'),
+            id: object.get('title_id'),
             title: object.get('title'),
             content: object.get('content'),
-            created_by: creator.get('username'),
-            created_at: creator.get('createdAt'),
+            created_by: object.get('created_by'),
+            created_at: object.get('createdAt'),
         }
         posts.push(this_post);
     }
@@ -352,28 +352,48 @@ async function deletePost(titleId) {
     return "done";
 }
 
-// ---------- Getting all your Posts (by id) -----------
+// ---------- Getting your Posts (by id) -----------
 
 app.get('/api/admin/post/crud/:titleId', (req, res)=>{
     titleId = parseInt(req.params.titleId);
-    // TODO: checking wether titleId isn't mentioned
     isAdmin().then(value => {
-        
         if (value==false){
             res.status(404).send('you are not admin');
             return;
         }
-        
         let posts = getAllPosts();
         posts.then(value => {
             for(post of value) {
+                console.log(post);
                 if(post.id == titleId){
-                    res.send(post);
+                    console.log("here")
+                    res.json({
+                        "post" : post
+                    });
                     return
                 }
                 
             }
-            res.send(value);
+            res.json({
+                "post" : value
+            });
+        }, reason => {res.send("something went wrong")});
+    });
+})
+
+// ----------- No ID ----------------
+
+app.get('/api/admin/post/crud/', (req, res)=>{
+    isAdmin().then(value => {
+        if (value==false){
+            res.status(404).send('you are not admin');
+            return;
+        }
+        let posts = getAllPosts();
+        posts.then(value => {
+            res.json({
+                "post" : value
+            });
         }, reason => {res.send("something went wrong")});
     });
 })

@@ -32,23 +32,53 @@ $(document).ready(function() {
 
     $('#user-email-placeholder').html(user.email)
 
-    $.ajax({
-        url: getUserPostsUrl,
-        method: 'GET',
-        headers: {
-            "Authorization": user.token,
-        },
-        success: function (response) {
-            if (response.length)
-                createAndAppendPosts(response);
-            else
-                $("#no-post-alert").removeClass("d-none");
+
+
+    fetch('http://localhost:1337/api/admin/post/crud/', { 
+            method: 'GET',
+            headers: {
+                "Authorization": user.token,
+            },
+            })
+                .then(
+                    function (response) {
+                        if (response.status !== 200) {
+                            console.log('Looks like there was a problem. Status Code: ' + response.status);
+                            return;
+                        }
+                        response.text().then(txt =>{
+                            let json_obj = JSON.parse(txt);
+                            console.log(json_obj);
+                            if (json_obj){
+                                createAndAppendPosts(json_obj);
+                            } else{
+                                $("#no-post-alert").removeClass("d-none");
+                            }
+                        })  
+                    }
+                )
+                .catch(function (err) {
+                    console.log('Fetch Error :-S', err);
+                });
+
+
+    // $.ajax({
+    //     url: getUserPostsUrl,
+    //     method: 'GET',
+    //     headers: {
+    //         "Authorization": user.token,
+    //     },
+    //     success: function (response) {
+    //         if (response.length)
+    //             createAndAppendPosts(response);
+    //         else
+    //             $("#no-post-alert").removeClass("d-none");
             
-        },
-        error: function (error) {
-            console.log(error)
-        }
-    });
+    //     },
+    //     error: function (error) {
+    //         console.log(error)
+    //     }
+    // });
 
     $("#create-post-btn").on('click', function(e) {
         $("#post-form").attr({
@@ -73,7 +103,6 @@ $(document).ready(function() {
 
     $("#post-form").on('submit', function(e) {
         e.preventDefault();
-        console.log($("#postTitle").val());
         fetch( 'http://localhost:1337/api/admin/post/crud' , { 
             method: 'POST',
             headers: {
@@ -131,23 +160,46 @@ function createAndAppendPosts(posts) {
 function createPostElements(posts) {
     postsElements = [];
 
-    for (post of posts) {
+    array_json = posts["post"];
+    var i;
+    if (!Array.isArray(array_json)){
+        array_json = [];
+        array_json.push(posts["post"]);
+    }
+    for (i = 0; i < array_json.length; i++){
         $post = $(".clonable-post").clone(true);
         $post.removeClass('d-none clonable-post');
 
-        $post.find(".post-title").text(post.title);
-        $post.find(".post-content").text(post.content);
-        $post.find(".post-author").text(post.user.email);
-        $post.find(".post-created-at").text(formatDate(post.createdAt));
-
-        $post.find(".remove-post-container").attr("data-pid", post.id).on('click', function(e) {
+        $post.find(".post-title").text(array_json[i].title);
+        $post.find(".post-content").text(array_json[i].content);
+        $post.find(".post-author").text(array_json[i].created_by.id);
+        $post.find(".post-created-at").text(formatDate(array_json[i].created_at));
+    
+        $post.find(".remove-post-container").attr("data-pid", array_json[i].id).on('click', function(e) {
             deletePostRequest($(this).data("pid"), $(this).closest(".post-container"));
         });
 
-        $post.find(".edit-post-container").attr("data-pid", post.id);
-
+        $post.find(".edit-post-container").attr("data-pid", array_json[i].id);
         postsElements.push($post)
     }
+
+    // for (post of posts) {
+    //     $post = $(".clonable-post").clone(true);
+    //     $post.removeClass('d-none clonable-post');
+
+    //     $post.find(".post-title").text(post.title);
+    //     $post.find(".post-content").text(post.content);
+    //     $post.find(".post-author").text(post.user.email);
+    //     $post.find(".post-created-at").text(formatDate(post.createdAt));
+
+    //     $post.find(".remove-post-container").attr("data-pid", post.id).on('click', function(e) {
+    //         deletePostRequest($(this).data("pid"), $(this).closest(".post-container"));
+    //     });
+
+    //     $post.find(".edit-post-container").attr("data-pid", post.id);
+
+    //     postsElements.push($post)
+    // }
     
     return postsElements;
 }

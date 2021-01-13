@@ -56,18 +56,30 @@ function createAndAppendPosts(posts) {
 
 function createPostElements(posts) {
     postsElements = [];
-
-    for (post of posts) {
+    array_json = posts["post"];
+    var i;
+    for (i = 0; i < length(array_json); i++){
         $post = $(".clonable-post").clone(true);
         $post.removeClass('d-none clonable-post');
 
-        $post.find(".post-title").text(post.title);
-        $post.find(".post-content").text(post.content);
-        $post.find(".post-author").text(post.user.email);
-        $post.find(".post-created-at").text(formatDate(post.createdAt));
-
+        $post.find(".post-title").text(array_json[i].title);
+        $post.find(".post-content").text(array_json[i].content);
+        $post.find(".post-author").text(array_json[i].created_by.id);
+        $post.find(".post-created-at").text(formatDate(array_json[i].created_at));
+    
         postsElements.push($post)
     }
+    // for (post of posts) {
+    //     $post = $(".clonable-post").clone(true);
+    //     $post.removeClass('d-none clonable-post');
+
+    //     $post.find(".post-title").text(post.title);
+    //     $post.find(".post-content").text(post.content);
+    //     $post.find(".post-author").text(post.user.email);
+    //     $post.find(".post-created-at").text(formatDate(post.createdAt));
+
+    //     postsElements.push($post)
+    // }
     
     return postsElements;
 }
