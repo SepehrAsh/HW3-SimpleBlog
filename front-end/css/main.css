@@ -4,12 +4,6 @@
 }
 
 :root {
-    --blue-color: rgb(0, 103, 168);
-    --dark-blue-color: rgb(3, 33, 55);
-    --gray-color: #3F4254;
-    --gray-light-color: #a2a3b7;
-    --gray-lighter-color: rgb(231, 239, 248);
-    /**********************************/
     --dark-blue: rgb(3, 33, 55);
     --light-blue: rgb(231, 239, 248);
     --org-blue: rgb(0, 103, 168);
@@ -67,7 +61,6 @@ body {
 
 .btn-outline-custom {
     color: var(--dark-blue);
-    border-color: var(--dark-blue);
     display: flex;
     cursor: pointer;
     justify-content: center;
@@ -86,6 +79,28 @@ body {
     align-content: center;
     align-items: center;
     color: var(--org-blue);
+    font-size: 14px;
+}
+
+.btn-outline-exit {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    align-items: center;
+    width: 50px;
+    height: 36px;
+    border: 2px solid #da2f3a;
+    border-radius: 4px;
+}
+
+.exit-texts {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: #e0525b;
     font-size: 14px;
 }
 
