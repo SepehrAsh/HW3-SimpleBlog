@@ -8,19 +8,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>تاپی‌سم</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="images/favicon-blue.png" />
+    <link rel="icon" type="image/png" href="images/favicon-multi.png" />
 
-    <!-- Fonts -->
     <link href='https://cdn.fontcdn.ir/Font/Persian/Samim/Samim.css' rel='stylesheet' type='text/css'>
 
-    <!-- FontAwesome   -->
     <link rel="stylesheet" href="css/fontawesome.min.css">
 
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
-    <!-- IOS Switch Button -->
     <link rel="stylesheet" href="css/ios-switch-button.css">
 
     <link rel="stylesheet" href="css/main.css">
@@ -51,16 +46,16 @@
                     ثبت نام
                 </span>
             </button>
-            <button id="logout-btn" class="mr-auto p-2 btn btn-outline-danger login-btn ml-2" onclick="logout()"
-                style="display: none;">
-                <span class="signin-and-signup-texts">
-                    خروج
+            <button id="admin-btn" class="mr-auto p-2 btn btn-outline-custom login-btn ml-2" onclick="openAdmin()"
+                style="display: none; background-color: var(--org-blue);">
+                <span class="signin-and-signup-texts" style="color: var(--light-blue);">
+                    داشبورد
                 </span>
             </button>
-            <button id="admin-btn" class="p-2 btn btn-outline-custom login-btn ml-2" onclick="openAdmin()"
+            <button id="logout-btn" class="p-2 btn btn-outline-exit login-btn ml-2" onclick="logout()"
                 style="display: none;">
-                <span class="signin-and-signup-texts">
-                    پنل کاربری
+                <span class="exit-texts">
+                    خروج
                 </span>
             </button>
         </div>
@@ -92,7 +87,10 @@
     <div id="main-container" class="tab-content">
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
             <div class="container mt-5" id="posts-container">
-                <div class="alert alert-secondary text-center">پست ها
+                <div class="alert alert-secondary text-center" style="background-color: var(--org-blue); border: none;">
+                    <span style="font-weight: 250; color: white;">
+                        پست‌ها
+                    </span>
                     <span id="user-email-placeholder"></span>
                 </div>
                 <div class="alert alert-danger text-center pt-3 pb-3 d-none" id="no-post-alert">پستی نوشته نشده است
@@ -125,9 +123,10 @@
                 </div>
                 <div class="d-flex align-items-center">
 
-                    <button onclick="closeModal()" id="go-home"
-                        class="mr-auto p-2 ml-2 text-decoration-none btn"><span>بازگشت به خانه</span> <i
-                            class="fal fa-angle-left" style="transform: scale(2); margin: 10px;"></i></button>
+                    <button onclick="closeModal()" id="go-home" class="mr-auto p-2 ml-2 text-decoration-none btn">
+                        <span>بازگشت به خانه</span>
+                        <i class="fal fa-angle-left" style="transform: scale(2); margin: 10px;"></i>
+                    </button>
                 </div>
             </nav>
 
@@ -196,7 +195,6 @@
             </div>
         </div>
     </div>
-    <!-- Loading JS -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/ios-switch-button.js"></script>
     <script src="js/login-register-tab-toggle.js"></script>

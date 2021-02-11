@@ -1,0 +1,143 @@
+/** Data page **/
+
+.data-tab {
+    margin-bottom: 200px;
+}
+
+.data-tbl {
+    width: 70% !important;
+    margin: 50px auto 30px;
+}
+
+.data-tbl th {
+    background-color: #f0f2f5 !important;
+    text-align: center;
+}
+
+.data-tbl tr {
+    height: 50px;
+    text-align: center;
+}
+
+.data-tbl tr:nth-child(even) {
+    background-color: white;
+    font-size: 14px;
+}
+
+.data-tbl tr:nth-child(odd) {
+    background-color: #f2f2f2 !important;
+    font-size: 14px;
+}
+
+body.night-mode .data-tbl th {
+    background-color: #4d4d4d !important;
+    color: white !important;
+}
+
+body.night-mode .data-tbl tr:nth-child(odd) {
+    background-color: #262626 !important;
+    color: rgba(245, 245, 245, 0.897);
+}
+
+body.night-mode .data-tbl tr:nth-child(even) {
+    background-color: #1a1a1a !important;
+    color: rgba(245, 245, 245, 0.897);
+}
+
+#data-buttons-container {
+    width: 70%;
+    margin: 10px auto;
+}
+
+#data-buttons-container .prev-flex, #data-buttons-container .next-flex {
+    border: 1px solid #808080;
+    color: #808080;
+    padding: 7px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#data-buttons-container .prev-flex:hover, #data-buttons-container .next-flex:hover {
+    background: #808080;
+    color: white;
+}
+
+.prev-flex {
+    float: right;
+}
+
+.next-flex {
+    float: left;
+}
+
+body.night-mode #data-buttons-container .prev-flex, body.night-mode #data-buttons-container .next-flex {
+    border: 1px solid #262626;
+    color: #262626;
+}
+
+body.night-mode #data-buttons-container .prev-flex:hover, body.night-mode #data-buttons-container .next-flex:hover {
+    background: #262626;
+    color: white;
+}
+
+.allCards {
+    width: 70%;
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5%;
+}
+
+.flex-cards-container {
+    display: flex;
+    width: 100%;
+    height: 180px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    flex-flow: column wrap;
+    background-color: white;
+    align-content: space-between;
+    border-radius: 5px;
+}
+
+.flex-cards-container>div {
+    background-color: #fff;
+    margin: 5px;
+    text-align: center;
+    line-height: 35px;
+    font-size: 10px;
+}
+
+body.night-mode .flex-cards-container {
+    background-color: #343a40 !important;
+}
+
+body.night-mode .flex-cards-container>div {
+    background-color: #343a40 !important;
+    color: whitesmoke !important;
+}
+
+.right-direction {
+    text-align: right !important;
+    padding-right: 7px !important;
+    width: 90px !important;
+}
+
+.left-direction {
+    text-align: left !important;
+    padding-left: 7px !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .data-tbl {
+        display: none !important;
+    }
+    .allCards {
+        display: block !important;
+    }
+    .tab-pane {
+        margin-top: 20px;
+    }
+}

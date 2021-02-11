@@ -4,14 +4,64 @@
     text-align: right;
 }
 
+:root {
+    --dark-blue: rgb(3, 33, 55);
+    --light-blue: rgb(231, 239, 248);
+    --org-blue: rgb(0, 103, 168);
+    --blue: rgb(0, 135, 217);
+}
+
+.navbar-admin {
+    background: var(--light-blue);
+    height: 100px !important;
+    width: 100%;
+}
+
+.logo-container {
+    height: 100%;
+    width: 150px;
+}
+
+.logo-image {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: 50px;
+    top: 0px;
+}
+
+.btn-outline-custom {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    align-items: center;
+    width: 100px;
+    height: 36px;
+    border: 2px solid var(--org-blue);
+    background-color: var(--org-blue);
+    border-radius: 4px;
+}
+
+.signin-and-signup-texts {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: #fcfcfc;
+    font-size: 14px;
+}
+
 /* Posts */
+
 .card-header i {
     vertical-align: middle;
     font-size: 18px;
     margin-left: 5px;
 }
 
-.post-created-at{
+.post-created-at {
     margin-left: 5px;
     margin-top: 4px;
 }
