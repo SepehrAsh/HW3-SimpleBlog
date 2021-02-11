@@ -1,1 +1,0 @@
-{"message":"Invalid username/password.","code":101,"level":"error","stack":"Error: Invalid username/password.\n    at /Users/alismac/Documents/CE_T7/Web Programming/HWs/3 - SimpleBlog/back-end/node_modules/parse-server/lib/Routers/UsersRouter.js:132:17","timestamp":"2021-01-13T12:52:34.215Z"}
